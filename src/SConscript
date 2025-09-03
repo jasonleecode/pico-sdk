@@ -36,6 +36,7 @@ rp2_common/hardware_adc/adc.c
 rp2_common/hardware_watchdog/watchdog.c
 common/hardware_claim/claim.c
 rp2_common/hardware_sync/sync.c
+rp2_common/hardware_sync_spin_lock/sync_spin_lock.c
 rp2_common/hardware_uart/uart.c
 rp2_common/hardware_spi/spi.c
 rp2_common/hardware_dma/dma.c
@@ -52,7 +53,6 @@ common/pico_util/pheap.c
 common/pico_util/queue.c
 rp2_common/pico_runtime/runtime.c
 rp2_common/hardware_clocks/clocks.c
-rp2_common/hardware_rtc/rtc.c
 rp2_common/hardware_xosc/xosc.c
 rp2_common/hardware_pll/pll.c
 rp2_common/hardware_vreg/vreg.c
@@ -67,7 +67,6 @@ rp2_common/pico_stdio/stdio.c
 rp2_common/pico_stdio_uart/stdio_uart.c
 rp2_common/pico_standard_link/new_delete.cpp
 rp2_common/hardware_irq/irq_handler_chain.S
-rp2_common/hardware_divider/divider.S
 rp2_common/pico_double/double_conv_m33.S
 rp2_common/pico_int64_ops/pico_int64_ops_aeabi.S
 rp2_common/pico_float/float_v1_rom_shim.S
@@ -86,6 +85,13 @@ elif TARGET_PLATFORM == 'rp2350':
 # 平台特定的源文件
 if TARGET_PLATFORM == 'rp2040':
     src += ['rp2040/pico_platform/platform.c']
+    src += ['rp2_common/hardware_divider/divider.S']  # RP2040 有 SIO 除法器硬件
+    src += ['rp2_common/hardware_rtc/rtc.c']  # RP2040 有 RTC 硬件
+    # RP2040 特定的 include 路径
+    path += [
+        cwd + '/rp2_common/hardware_rtc/include',
+        cwd + '/rp2_common/hardware_divider/include',
+    ]
 elif TARGET_PLATFORM == 'rp2350':
     # 暂时跳过RP2350的platform.c，因为它有编译问题
     # src += ['rp2350/pico_platform/platform.c']
@@ -114,8 +120,7 @@ path += [
     cwd + '/rp2_common/hardware_spi/include',
     cwd + '/rp2_common/hardware_i2c/include',
     cwd + '/rp2_common/hardware_pwm/include',
-    cwd + '/rp2_common/hardware_rtc/include',
-    cwd + '/rp2_common/hardware_divider/include',
+    cwd + '/rp2_common/hardware_rcp/include',  # RP2350 需要 RCP 硬件
     cwd + '/common/pico_time/include',
     cwd + '/rp2_common/pico_time_adapter/include',
     cwd + '/rp2_common/hardware_timer/include',

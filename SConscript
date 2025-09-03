@@ -51,7 +51,8 @@ elif TARGET_PLATFORM == 'rp2350':
         'PICO_BUILD=1',
         'PICO_NO_HARDWARE=0',
         'PICO_ON_DEVICE=1',
-        'PICO_TARGET_PLATFORM=rp2350'
+        'PICO_TARGET_PLATFORM=rp2350',
+        'PICO_RP2350=1'
     ]
 else:
     raise ValueError(f"Unsupported target platform: {TARGET_PLATFORM}")
